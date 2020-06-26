@@ -1,0 +1,47 @@
+cabal-version: 3.0
+name:          backpack
+version:       0.0.0.0
+
+common shared
+  default-language: Haskell2010
+  build-depends: base, relude
+  mixins: base hiding ( Prelude ), relude ( Relude as Prelude )
+  default-extensions:
+    OverloadedStrings
+    RankNTypes
+
+library sig-fruit
+  import: shared
+  signatures: Fruit
+  hs-source-dirs: sig-fruit
+
+library lib-baking
+  import: shared
+  hs-source-dirs: lib-baking
+  exposed-modules: Baking
+  build-depends: sig-fruit, microlens
+
+library impl-tuple
+  import: shared
+  hs-source-dirs: impl-tuple
+  exposed-modules: Fruit
+  build-depends: microlens
+
+library impl-record
+  import: shared
+  hs-source-dirs: impl-record
+  exposed-modules: Fruit
+  build-depends: microlens
+
+executable exe-tuple
+  import: shared
+  main-is: Main.hs
+  hs-source-dirs: app
+  build-depends: lib-baking, impl-tuple, microlens
+
+executable exe-record
+  import: shared
+  main-is: Main.hs
+  hs-source-dirs: app
+  build-depends: lib-baking, impl-record, microlens
+
